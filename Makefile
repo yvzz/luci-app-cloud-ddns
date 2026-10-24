@@ -3,7 +3,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=luci-app-cloud-ddns
 PKG_VERSION:=1.0.0
 PKG_RELEASE:=1
-PKG_LICENSE:=Apache-2.0
+PKG_LICENSE:=MIT
 PKG_MAINTAINER:=yvzz
 
 LUCI_TITLE:=LuCI Support for Cloud DDNS (DNSPod + AliDNS)
