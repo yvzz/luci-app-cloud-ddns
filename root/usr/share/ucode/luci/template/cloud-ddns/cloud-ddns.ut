@@ -184,6 +184,26 @@
 			';font-weight:bold">' + txt + '</span>';
 	}
 
+	/* 状态行与左侧标题垂直对齐：主题的标题 label 带 padding-top（bootstrap 为 6px），
+	   而字段单元格内容默认贴顶/基线对齐，单行的状态文字因此比标题高 3~6px
+	   （旧版表格布局 vertical-align:middle 标题 + flex-start 主题均复现）。
+	   把标题的 padding-top / line-height 复制到状态盒子（改 inline-block）和
+	   字段容器上，状态文字基线即与标题一致；标题无 padding 时自动退化为无操作。
+	   四种主题布局（表格基线/表格居中/flex 基线/flex 贴顶）实测偏差均为 0 */
+	function CD_alignStatusRow() {
+		var box = document.getElementById('cd_status');
+		var row = box && box.closest && box.closest('.cbi-value');
+		var lbl = row && row.querySelector('.cbi-value-title');
+		if (!box || !lbl) return;
+		var cs = getComputedStyle(lbl);
+		var field = box.parentNode;
+		box.style.display = 'inline-block';
+		box.style.paddingTop = cs.paddingTop;
+		box.style.lineHeight = cs.lineHeight;
+		if (field && field.classList && field.classList.contains('cbi-value-field'))
+			field.style.lineHeight = cs.lineHeight;
+	}
+
 	function CD_updateStatus() {
 		var el = document.getElementById('cd_status');
 
@@ -316,6 +336,7 @@
 	}
 
 	document.addEventListener('DOMContentLoaded', function() {
+		CD_alignStatusRow();
 		CD_updateStatus();
 		CD_loadLog();
 		CD_toggleMode();
